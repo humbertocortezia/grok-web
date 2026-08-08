@@ -1,12 +1,89 @@
 # Grok Web
 
-Interface gráfica **local** para o [Grok Build](https://grok.com) (CLI/TUI).  
-O agent continua rodando na sua máquina (`grok agent serve`); o browser vira a UI rica — chat, sessões, arquivos, MCP, skills e uso.
+<p align="center">
+  <strong>Local web UI for Grok Build CLI — full power of the agent (tools, git, MCP, skills, sessions) in the browser. No more pure TUI.</strong>
+</p>
 
-> **Não é o chat do grok.com.**  
-> Tools, git, filesystem e MCP rodam no **agent local**, não no Next.js.
+<p align="center">
+  <em>UI web local para o Grok Build CLI — o poder completo do agent (tools, git, MCP, skills, sessões) no browser. Chega de TUI puro.</em>
+</p>
 
-![Grok Web — interface](docs/images/page.jpg)
+<p align="center">
+  <a href="https://github.com/humbertocortezia/grok-web/stargazers"><img src="https://img.shields.io/github/stars/humbertocortezia/grok-web?style=flat&color=a78bfa" alt="Stars" /></a>
+  <a href="https://github.com/humbertocortezia/grok-web/network/members"><img src="https://img.shields.io/github/forks/humbertocortezia/grok-web?style=flat" alt="Forks" /></a>
+  <a href="https://github.com/humbertocortezia/grok-web/issues"><img src="https://img.shields.io/github/issues/humbertocortezia/grok-web?style=flat" alt="Issues" /></a>
+  <img src="https://img.shields.io/badge/node-%3E%3D20-339933?style=flat&logo=node.js&logoColor=white" alt="Node.js 20+" />
+  <img src="https://img.shields.io/badge/Next.js-16-black?style=flat&logo=next.js" alt="Next.js" />
+  <img src="https://img.shields.io/badge/license-private-lightgrey?style=flat" alt="License" />
+  <img src="https://img.shields.io/badge/local--first-yes-34d399?style=flat" alt="Local-first" />
+  <img src="https://img.shields.io/badge/MCP-compatible-0ea5e9?style=flat" alt="MCP" />
+</p>
+
+<p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#como-usar-a-interface">Uso</a> ·
+  <a href="#arquitetura">Arquitetura</a> ·
+  <a href="#segurança">Segurança</a>
+</p>
+
+---
+
+## Preview
+
+<p align="center">
+  <video src="docs/images/grokweb.mp4" poster="docs/images/page.jpg" controls playsinline muted loop width="100%">
+    Your browser does not support the video tag.
+    <a href="docs/images/grokweb.mp4">Download the demo video</a>
+  </video>
+</p>
+
+<p align="center">
+  <a href="docs/images/grokweb.mp4"><strong>▶ Demo video</strong></a>
+  ·
+  <a href="docs/images/page.jpg">Screenshot</a>
+  ·
+  <a href="docs/DEMO.md">Shot list</a>
+</p>
+
+![Grok Web — UI preview](docs/images/page.jpg)
+
+<p align="center"><sub>Demo: <code>docs/images/grokweb.mp4</code> · still: <code>docs/images/page.jpg</code></sub></p>
+
+> **Not grok.com.** The model, tools, git, MCP and filesystem run on **your machine** via `grok agent serve` — Next.js is only the shell.
+>
+> **Não é o chat do grok.com.** Tools, git, filesystem e MCP rodam no **agent local**, não no Next.js.
+
+### Topics (GitHub)
+
+No repositório → **About** → ⚙️ → Topics:
+
+`grok` · `grok-build` · `xai` · `self-hosted` · `nextjs` · `ai-agent` · `local-first` · `mcp` · `cli`
+
+```bash
+# com GitHub CLI:
+gh repo edit humbertocortezia/grok-web \
+  --add-topic grok --add-topic grok-build --add-topic xai \
+  --add-topic self-hosted --add-topic nextjs --add-topic ai-agent \
+  --add-topic local-first --add-topic mcp --add-topic cli
+```
+
+---
+
+## Quick start
+
+```bash
+# Prerequisites: Node 20+, Grok Build CLI (`grok login` once)
+cd ~/projetos/grok-web
+npm install
+npm run web
+```
+
+Opens **http://127.0.0.1:3847** and starts the agent on **ws://127.0.0.1:2419**.
+
+```bash
+node bin/grok-web.mjs --cwd ~/projetos/meu-app   # project CWD
+node bin/grok-web.mjs --port 4000 --no-open       # custom port, no browser
+```
 
 ---
 
