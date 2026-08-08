@@ -3,21 +3,38 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3847 -H 127.0.0.1",
+    "web": "node bin/grok-web.mjs",
+    "web:no-open": "node bin/grok-web.mjs --no-open",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3847 -H 127.0.0.1",
     "lint": "eslint"
   },
+  "bin": {
+    "grok-web": "./bin/grok-web.mjs"
+  },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.43.0",
+    "lucide-react": "^1.28.0",
     "next": "16.2.12",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "smol-toml": "^1.7.1",
+    "tailwind-merge": "^3.6.0",
+    "uuid": "^14.0.1",
+    "ws": "^8.21.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/uuid": "^10.0.0",
+    "@types/ws": "^8.18.1",
+    "concurrently": "^10.0.4",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "tailwindcss": "^4",
