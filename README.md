@@ -441,6 +441,7 @@ Permissões: o launcher sobe com `--always-approve`; o client também auto-appro
 | Sintoma | O que fazer |
 |---------|-------------|
 | “Agent offline” | `npm run web` ou suba o `grok agent serve` e confira `GROK_AGENT_WS_URL` |
+| `worker quit … Auth(AuthorizationRequired)` | Quase sempre **MCP remoto sem OAuth** (ex. Cloudflare) ao anexar a sessão — o chat em si continua. Logue o MCP no TUI ou desabilite o server. Se o status da UI pedir login: `grok login` |
 | `session/load` falha | Sessão aberta no TUI (exclusiva). Feche no TUI ou use **Nova** |
 | MCP novo não aparece no agent | Reinicie o agent (`Ctrl+C` no launcher e `npm run web` de novo) |
 | Porta em uso | Mate o processo em 3847/2419 ou use `--port` / `GROK_AGENT_PORT` |

@@ -997,8 +997,12 @@ export function AppShell() {
         setConnected(true);
         setStatus("inicializando ACP…");
         try {
-          await client.initialize();
-          setStatus("online");
+          const init = await client.initialize();
+          const email =
+            typeof init.auth?._meta?.email === "string"
+              ? init.auth._meta.email
+              : null;
+          setStatus(email ? `online · ${email}` : "online");
         } catch (e) {
           setStatus(e instanceof Error ? e.message : "falha initialize");
         }

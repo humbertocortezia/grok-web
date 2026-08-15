@@ -30,6 +30,31 @@ type Pending = {
   reject: (err: Error) => void;
 };
 
+export type AcpAuthMethod = {
+  id: string;
+  name?: string;
+  description?: string;
+};
+
+export type AcpInitializeResult = {
+  protocolVersion?: number;
+  authMethods?: AcpAuthMethod[];
+  _meta?: {
+    defaultAuthMethodId?: string;
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+};
+
+export type AcpAuthenticateResult = {
+  _meta?: {
+    email?: string;
+    auth_mode?: string;
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+};
+
 export type AcpClientEvents = {
   onOpen?: () => void;
   onClose?: () => void;
@@ -261,7 +286,7 @@ export class AcpClient {
   }
 
   async initialize() {
-    return this.request("initialize", {
+    const result = await this.request<AcpInitializeResult>("initialize", {
       protocolVersion: 1,
       clientCapabilities: {
         fs: { readTextFile: true, writeTextFile: true },
@@ -270,6 +295,43 @@ export class AcpClient {
       },
       clientInfo: { name: "grok-web", version: "0.1.1" },
     });
+    const auth = await this.authenticateFromInitialize(result);
+    return { ...result, auth };
+  }
+
+  /**
+   * ACP requires `authenticate` after `initialize` when the agent lists
+   * authMethods. The TUI does this as eager_auth; agent serve waits for us.
+   * Prefer the cached ~/.grok/auth.json token — grok.com needs a browser
+   * flow we do not implement here.
+   */
+  async authenticateFromInitialize(init: AcpInitializeResult) {
+    const methods = init.authMethods || [];
+    if (methods.length === 0) return null;
+
+    const defaultId =
+      typeof init._meta?.defaultAuthMethodId === "string"
+        ? init._meta.defaultAuthMethodId
+        : undefined;
+    const cached = methods.find((m) => m.id === "cached_token");
+    const methodId =
+      (defaultId === "cached_token" && cached ? defaultId : undefined) ||
+      cached?.id;
+
+    if (!methodId) {
+      throw new Error(
+        "Grok precisa de login interativo. No terminal: grok login"
+      );
+    }
+
+    try {
+      return await this.request<AcpAuthenticateResult>("authenticate", {
+        methodId,
+      });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "authenticate falhou";
+      throw new Error(`${msg}. Rode: grok login`);
+    }
   }
 
   async newSession(
