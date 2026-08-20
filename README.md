@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Install** | `npm i -g @humbertocortezia/grok-web` |
+| **Install** | `npm i -g grokweb` |
 | **Run** | `grok-web` (opens your browser) |
 | **UI** | `http://127.0.0.1:3847` |
 | **Agent** | `ws://127.0.0.1:2419/ws` |
@@ -46,10 +46,10 @@ Developed and tested on Linux and WSL; macOS is expected to work.
 ## Install
 
 ```bash
-npm i -g @humbertocortezia/grok-web
+npm i -g grokweb
 ```
 
-That's it. The package ships pre-built — no `npm install` step, zero runtime dependencies. (The command stays `grok-web` either way.)
+That's it. The package ships pre-built — no `npm install` step, zero runtime dependencies. (The command is `grok-web`.)
 
 Verify:
 
