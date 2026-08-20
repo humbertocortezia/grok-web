@@ -6,7 +6,7 @@
 
 | | |
 |---|---|
-| **Install** | `npm i -g grokweb` |
+| **Install** | `npm i -g grok-web-ui` |
 | **Run** | `grok-web` (opens your browser) |
 | **UI** | `http://127.0.0.1:3847` |
 | **Agent** | `ws://127.0.0.1:2419/ws` |
@@ -46,7 +46,7 @@ Developed and tested on Linux and WSL; macOS is expected to work.
 ## Install
 
 ```bash
-npm i -g grokweb
+npm i -g grok-web-ui
 ```
 
 That's it. The package ships pre-built — no `npm install` step, zero runtime dependencies. (The command is `grok-web`.)

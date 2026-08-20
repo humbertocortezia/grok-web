@@ -1,5 +1,5 @@
 {
-  "name": "grokweb",
+  "name": "grok-web-ui",
   "version": "0.2.0",
   "description": "Local web UI for Grok Build CLI — chat, sessions, projects, diffs and MCP in the browser.",
   "license": "MIT",
