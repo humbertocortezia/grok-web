@@ -7,7 +7,7 @@
   "author": "Humberto Cortezia",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/humbertocortezia/grok-web.git"
+    "url": "git+https://github.com/humbertocortezia/grok-web-cli.git"
   },
   "keywords": [
     "grok",
