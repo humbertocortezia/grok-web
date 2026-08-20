@@ -148,7 +148,9 @@ function shutdown() {
       /* ignore */
     }
   }
-  setTimeout(() => process.exit(0), 1500).unref();
+  // Keep the timer ref'd: if children die fast the event loop would otherwise
+  // drain and Node exits 13 ("unsettled top-level await") before this fires.
+  setTimeout(() => process.exit(0), 1500);
 }
 
 process.on("SIGINT", shutdown);

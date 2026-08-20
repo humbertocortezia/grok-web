@@ -1,7 +1,7 @@
 import http from "node:http";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { listSessions, getSessionDetail } from "./lib/sessions";
 import { getGitStatus } from "./lib/git-diff";
 import { isTextLike, resolveAllowedPath } from "./lib/fs-sandbox";
@@ -600,33 +600,43 @@ async function serveStatic(
 
 /* ─── server ──────────────────────────────────────────────────────── */
 
-const server = http.createServer(async (req, res) => {
-  const url = new URL(req.url || "/", `http://${host}:${port}`);
-  try {
-    if (url.pathname.startsWith("/api/")) {
-      await routeApi(req, res, url);
-    } else {
-      await serveStatic(req, res, url);
+export function createServer(): http.Server {
+  return http.createServer(async (req, res) => {
+    const url = new URL(req.url || "/", `http://${host}:${port}`);
+    try {
+      if (url.pathname.startsWith("/api/")) {
+        await routeApi(req, res, url);
+      } else {
+        await serveStatic(req, res, url);
+      }
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "internal error";
+      if (!res.headersSent) sendJson(res, 500, { error: msg });
+      else res.end();
     }
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : "internal error";
-    if (!res.headersSent) sendJson(res, 500, { error: msg });
-    else res.end();
+  });
+}
+
+// Only auto-listen when run directly (node dist-server/server.mjs / tsx server.ts),
+// not when imported by tests.
+const isMain =
+  process.argv[1] != null && import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isMain) {
+  const server = createServer();
+  server.listen(port, host, () => {
+    console.log(`[grok-web] UI + API → http://${host}:${port}`);
+    fs.access(staticDir).catch(() => {
+      console.log(
+        `[grok-web] aviso: ${staticDir} não existe — só APIs (rode "npm run build" p/ servir a UI)`
+      );
+    });
+  });
+
+  for (const sig of ["SIGINT", "SIGTERM"] as const) {
+    process.on(sig, () => {
+      server.close(() => process.exit(0));
+      setTimeout(() => process.exit(0), 2000).unref();
+    });
   }
-});
-
-server.listen(port, host, () => {
-  console.log(`[grok-web] UI + API → http://${host}:${port}`);
-  fs.access(staticDir).catch(() => {
-    console.log(
-      `[grok-web] aviso: ${staticDir} não existe — só APIs (rode "npm run build" p/ servir a UI)`
-    );
-  });
-});
-
-for (const sig of ["SIGINT", "SIGTERM"] as const) {
-  process.on(sig, () => {
-    server.close(() => process.exit(0));
-    setTimeout(() => process.exit(0), 2000).unref();
-  });
 }
