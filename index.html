@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR" class="h-full" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grok Web</title>
+    <meta
+      name="description"
+      content="Interface gráfica para o Grok Build — chat, sessões, projetos, diffs e MCP no browser."
+    />
+    <link rel="icon" type="image/svg+xml" href="/grok-logo.svg" />
+    <link rel="apple-touch-icon" href="/grok-logo.svg" />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("grok-web-theme");
+          if (t === "light" || t === "dark") {
+            document.documentElement.setAttribute("data-theme", t);
+          } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+            document.documentElement.setAttribute("data-theme", "light");
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="h-full antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
