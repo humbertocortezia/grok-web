@@ -98,10 +98,11 @@ describe("launcher CLI", () => {
 
   it("fails when the agent port is already in use", async () => {
     const busy = await freePort();
+    const uiPort = await freePort();
     const holder = net.createServer();
     await new Promise<void>((r) => holder.listen(busy, "127.0.0.1", () => r()));
     try {
-      const r = await runLauncher(["--no-open"], {
+      const r = await runLauncher(["--port", String(uiPort), "--no-open"], {
         PATH: `${stubBinDir}:${process.env.PATH}`,
         GROK_AGENT_PORT: String(busy),
       });

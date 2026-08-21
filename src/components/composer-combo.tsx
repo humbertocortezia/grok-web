@@ -134,6 +134,7 @@ export function ComposerCombo({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listboxId}
+        aria-label={`${label}: ${selectedLabel}`}
         onClick={() => !disabled && setOpen((v) => !v)}
         onKeyDown={onTriggerKeyDown}
       >
