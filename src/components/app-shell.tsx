@@ -2841,21 +2841,18 @@ export function AppShell() {
 
                     <div className="composer-model-pickers">
                       {modelCatalog.length > 1 ? (
-                        <label className="composer-select-wrap" title="Modelo">
-                          <span className="composer-select-label">Modelo</span>
-                          <select
-                            className="composer-select"
-                            value={selectedModelId}
-                            disabled={modelSwitching || !modelCatalog.length}
-                            onChange={(e) => void onSelectModel(e.target.value)}
-                          >
-                            {modelCatalog.map((m) => (
-                              <option key={m.id} value={m.id}>
-                                {m.name || m.id}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
+                        <ComposerCombo
+                          label="Modelo"
+                          title="Modelo"
+                          value={selectedModelId}
+                          disabled={modelSwitching || !modelCatalog.length}
+                          options={modelCatalog.map((m) => ({
+                            value: m.id,
+                            label: m.name || m.id,
+                            description: m.description,
+                          }))}
+                          onChange={(v) => void onSelectModel(v)}
+                        />
                       ) : (
                         <div
                           className="composer-select-wrap composer-select-wrap--static"
@@ -3065,4 +3062,3 @@ function Row({ label, value, mono }: { label: string; value: string; mono?: bool
     </div>
   );
 }
-
